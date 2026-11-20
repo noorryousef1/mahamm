@@ -17,7 +17,7 @@ function Members() {
         setMembers(membersData);
         setEvents(eventsData);
       })
-      .catch(() => setError("ما قدرنا نجيب الأعضاء. تأكد إنه الباك شغّال (npm run server)."))
+      .catch(() => setError("ما قدرنا نجيب الأعضاء. تأكد إنه الباك شغّال"))
       .finally(() => setLoading(false));
   }, []);
 

@@ -1,10 +1,10 @@
-/* الشريط كله */
+/* الشريط كله: الشعار ← الروابط ← زر الداشبورد (من اليمين لليسار) */
 .header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 48px;
   padding: 20px 60px;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.5);
   box-shadow: 0 2px 12px rgba(15, 42, 92, 0.08);
 }
 
@@ -28,11 +28,15 @@
   color: #1e4a9e;
 }
 
-/* الروابط */
+/* الروابط: بتاخد المساحة اللي بالنص، وبتبلش من اليمين جنب الشعار */
+.nav {
+  flex: 1;
+}
+
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 48px;
+  gap: 36px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -50,35 +54,49 @@
   color: #0ea5e9;
 }
 
-/* تسجيل الدخول: زر سماوي */
-.nav-links .login {
-  color: #ffffff;
-  background: #0ea5e9;
-  padding: 8px 22px;
+/* زر الداشبورد: على اليسار */
+.dashboard-btn {
+  padding: 10px 26px;
   border-radius: 999px;
+  background: #0ea5e9;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
   transition: background 0.2s;
 }
 
-.nav-links .login:hover {
-  color: #ffffff;
+.dashboard-btn:hover {
   background: #0284c7;
 }
 
-/* على الموبايل: الروابط تنزل تحت الشعار */
-@media (max-width: 768px) {
+/* الشاشات الأصغر: الروابط تنزل تحت */
+@media (max-width: 1100px) {
   .header {
-    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-between;
     gap: 16px;
-    padding: 16px;
+    padding: 16px 24px;
+  }
+
+  .nav {
+    order: 3;
+    flex-basis: 100%;
   }
 
   .nav-links {
-    gap: 20px;
     flex-wrap: wrap;
     justify-content: center;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand-img {
+    height: 56px;
   }
 
   .brand-name {
-    font-size: 30px;
+    font-size: 28px;
   }
 }

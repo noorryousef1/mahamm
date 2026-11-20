@@ -6,17 +6,18 @@ function Header() {
     <header className="header">
       <Link to="/" className="brand">
         <img src="/logo.png" alt="شعار مهام" className="brand-img" />
-        <span className="brand-name">مهام</span>
       </Link>
 
-      <nav>
+      <nav className="nav">
         <ul className="nav-links">
           <li><Link to="/">الرئيسية</Link></li>
           <li><Link to="/events">الفعاليات</Link></li>
           <li><Link to="/members">الأعضاء</Link></li>
-          <li><Link to="/login" className="login">تسجيل الدخول</Link></li>
+          <li><Link to="/book">احجز فعاليتك</Link></li>
         </ul>
       </nav>
+
+      <Link to="/dashboard" className="dashboard-btn">Dashboard</Link>
     </header>
   );
 }

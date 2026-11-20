@@ -1,0 +1,83 @@
+.feedback {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px 60px;
+}
+
+.feedback h2 {
+  margin: 0;
+  font-size: 40px;
+  font-weight: 800;
+  color: #1e4a9e;
+}
+
+.feedback-subtitle {
+  margin: 4px 0 32px;
+  color: #475569;
+  font-size: 18px;
+}
+
+.feedback-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.feedback-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 28px 24px 24px;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 6px 20px rgba(15, 42, 92, 0.08);
+}
+
+.feedback-quote {
+  position: absolute;
+  top: 4px;
+  left: 18px;
+  font-size: 72px;
+  line-height: 1;
+  color: #bae6fd;
+}
+
+.feedback-text {
+  flex: 1;
+  margin: 0 0 16px;
+  color: #334155;
+  line-height: 1.8;
+}
+
+.feedback-stars {
+  margin: 0 0 8px;
+  color: #f59e0b;
+  font-size: 20px;
+  letter-spacing: 2px;
+}
+
+.feedback-card h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #0f2a5c;
+}
+
+.feedback-event {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0ea5e9;
+}
+
+@media (max-width: 480px) {
+  .feedback { padding: 24px 16px 40px; }
+  .feedback h2 { font-size: 30px; }
+}
+
+.feedback-empty {
+  padding: 24px;
+  border-radius: 18px;
+  background: #ffffff;
+  color: #475569;
+  text-align: center;
+  font-size: 18px;
+}
