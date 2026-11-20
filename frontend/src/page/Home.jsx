@@ -10,14 +10,10 @@ const Home = () => {
   const [feedback, setFeedback] = useState([])
 
   useEffect(() => {
-    fetch('/api/feedback')
+    fetch('/api/feedback?status=approved')
       .then((res) => res.json())
       .then((data) => setFeedback(data))
   }, [])
-
-  const addFeedback = (newItem) => {
-    setFeedback([...feedback, newItem])
-  }
 
   return (
     <div>
@@ -26,7 +22,7 @@ const Home = () => {
       <BookCTA />
       <Feedback feedback={feedback} />
       <Members />
-      <FeedbackForm onAdd={addFeedback} />
+      <FeedbackForm />
     </div>
   )
 }

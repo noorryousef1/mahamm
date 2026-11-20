@@ -5,3 +5,6 @@ dist/
 # الصور الأصلية الكبيرة (منستعمل النسخ الخفيفة بدالها)
 frontend/public/events/IMG_*.JPG
 frontend/public/slides/*-unsplash.jpg
+
+# قاعدة البيانات الحقيقية (فيها أرقام وكلمات سر) ما بتنرفع
+db.json

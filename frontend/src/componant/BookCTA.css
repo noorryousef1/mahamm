@@ -1,11 +1,9 @@
-/* نفس عرض باقي الأقسام */
 .book-cta-section {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px 24px 40px;
 }
 
-/* البانر: صورة وفوقها لون أزرق شفاف */
 .book-cta {
   display: flex;
   align-items: center;

@@ -21,7 +21,6 @@
   color: #1e4a9e;
 }
 
-/* شارة الحالة */
 .status {
   padding: 4px 14px;
   border-radius: 999px;
@@ -72,7 +71,6 @@
   border-radius: 10px;
 }
 
-/* موعد الاجتماع بعد الموافقة */
 .booking-meeting {
   display: flex;
   flex-wrap: wrap;
@@ -81,4 +79,27 @@
   border-radius: 12px;
   background: #dcfce7;
   color: #14532d;
+}
+
+.booking-meeting a {
+  color: #15803d;
+  font-weight: 800;
+}
+
+.booking-admin-message {
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: #e0f4ff;
+  color: #0f2a5c;
+}
+
+.booking-admin-message.rejected {
+  background: #fee2e2;
+  color: #7f1d1d;
+}
+
+.booking-admin-message p {
+  margin: 4px 0 0;
+  line-height: 1.7;
+  white-space: pre-line;
 }

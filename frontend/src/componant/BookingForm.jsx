@@ -1,4 +1,5 @@
 import { useState } from "react";
+import resizeImage, { imageErrorMessage } from "../utils/resizeImage";
 import "./BookingForm.css";
 
 const emptyForm = {
@@ -12,28 +13,6 @@ const emptyForm = {
   phone: "",
 };
 
-// بتصغّر الصورة قبل ما نبعتها، لحتى ما تكون ثقيلة على الباك
-function resizeImage(file) {
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const img = new Image();
-      img.onload = () => {
-        const scale = Math.min(1, 800 / img.width);
-        const canvas = document.createElement("canvas");
-        canvas.width = img.width * scale;
-        canvas.height = img.height * scale;
-        canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
-        resolve(canvas.toDataURL("image/jpeg", 0.7));
-      };
-      img.src = reader.result;
-    };
-    reader.readAsDataURL(file);
-  });
-}
-
-// بيعمل رمز عشوائي للحجز، مثلاً: MH-7KQ2XP
-// شلنا الحروف اللي بتتلخبط (O و 0، I و 1)
 function generateCode() {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   let code = "MH-";
@@ -50,20 +29,23 @@ function BookingForm({ onBooked }) {
   const [message, setMessage] = useState("");
   const [bookingCode, setBookingCode] = useState("");
 
-  // دالة وحدة لكل الخانات: بتعرف الخانة من الـ name تبعها
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleImages = async (e) => {
     const files = [...e.target.files].slice(0, 4 - images.length);
-    const resized = await Promise.all(files.map(resizeImage));
-    setImages([...images, ...resized]);
     e.target.value = "";
+    try {
+      const resized = await Promise.all(files.map((file) => resizeImage(file)));
+      setImages((prev) => [...prev, ...resized].slice(0, 4));
+    } catch {
+      setMessage(imageErrorMessage);
+    }
   };
 
   const removeImage = (index) => {
-    setImages(images.filter((_, i) => i !== index));
+    setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleSubmit = (e) => {
@@ -155,7 +137,7 @@ function BookingForm({ onBooked }) {
           {images.map((src, index) => (
             <div key={index} className="booking-preview">
               <img src={src} alt="" />
-              <button type="button" onClick={() => removeImage(index)}>✕</button>
+              <button type="button" onClick={() => removeImage(index)}>×</button>
             </div>
           ))}
         </div>
@@ -169,9 +151,9 @@ function BookingForm({ onBooked }) {
 
       {bookingCode && (
         <div className="booking-code-box">
-          <p>وصل طلبك ✅ هاد رمز حجزك، احفظه لتتابع حالة الطلب:</p>
+          <p>وصل طلبك. هاد رمز حجزك، احفظه لتتابع حالة الطلب:</p>
           <p className="booking-code-note">
-            ⚠️ اكتبه أو صوّره. حفظناه كمان على هالجهاز، بس إذا فتحت من جهاز ثاني رح تحتاجه.
+            اكتبه أو صوّره. حفظناه كمان على هالجهاز، بس إذا فتحت من جهاز ثاني رح تحتاجه.
           </p>
           <strong className="booking-code">{bookingCode}</strong>
           <button type="button" onClick={() => navigator.clipboard.writeText(bookingCode)}>

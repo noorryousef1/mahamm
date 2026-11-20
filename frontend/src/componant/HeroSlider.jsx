@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./HeroSlider.css";
 
-// بيانات السلايدات: صورة + عنوان + نص
 const slides = [
   {
     image: "/slides/slide1.jpg",
@@ -22,10 +21,8 @@ const slides = [
 ];
 
 function HeroSlider() {
-  // رقم السلايد اللي ظاهر هلّق
   const [current, setCurrent] = useState(0);
 
-  // كل 5 ثواني روح عالسلايد اللي بعده
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrent((prev) => (prev + 1) % slides.length);
@@ -50,17 +47,15 @@ function HeroSlider() {
             <p>{slide.text}</p>
             <div className="hero-buttons">
               <Link to="/events" className="btn-primary">استعرض الفعاليات</Link>
-              <Link to="/members" className="btn-secondary">تعرّف على الفريق</Link>
+              <Link to="/book" className="btn-secondary">احجز فعاليتك</Link>
             </div>
           </div>
         </div>
       ))}
 
-      {/* الأسهم */}
       <button className="arrow arrow-prev" onClick={prevSlide}>›</button>
       <button className="arrow arrow-next" onClick={nextSlide}>‹</button>
 
-      {/* النقاط تحت */}
       <div className="dots">
         {slides.map((_, index) => (
           <button

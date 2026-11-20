@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./FeedbackForm.css";
 
-function FeedbackForm({ onAdd }) {
+function FeedbackForm() {
   const [name, setName] = useState("");
   const [eventName, setEventName] = useState("");
   const [text, setText] = useState("");
@@ -13,7 +13,7 @@ function FeedbackForm({ onAdd }) {
     setSending(true);
     setMessage("");
 
-    const newFeedback = { name, eventName, text };
+    const newFeedback = { name, eventName, text, status: "pending" };
 
     fetch("/api/feedback", {
       method: "POST",
@@ -21,12 +21,11 @@ function FeedbackForm({ onAdd }) {
       body: JSON.stringify(newFeedback),
     })
       .then((res) => res.json())
-      .then((saved) => {
-        onAdd(saved);
+      .then(() => {
         setName("");
         setEventName("");
         setText("");
-        setMessage("شكراً! وصل رأيك ");
+        setMessage("شكراً! وصل رأيك، ورح ينعرض بعد ما نراجعه.");
       })
       .catch(() => setMessage("صار خطأ، جرّب كمان مرة."))
       .finally(() => setSending(false));

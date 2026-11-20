@@ -17,7 +17,6 @@
   font-size: 18px;
 }
 
-/* الكاردات: بتترتب لحالها حسب عرض الشاشة */
 .events-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));

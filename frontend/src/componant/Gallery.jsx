@@ -9,7 +9,7 @@ function Gallery({ images, onClose }) {
 
   return (
     <div className="gallery">
-      <button className="gallery-close" onClick={onClose}>✕</button>
+      <button className="gallery-close" onClick={onClose}>×</button>
 
       <button className="gallery-arrow" onClick={prev}>›</button>
       <img src={images[current]} alt="" />

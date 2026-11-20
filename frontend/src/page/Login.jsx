@@ -14,8 +14,7 @@ function Login() {
     setError("");
     setLoading(true);
 
-    // بندوّر على الأدمن باسم المستخدم، وبعدين بنقارن كلمة السر
-    fetch(`/api/admins?username=${encodeURIComponent(username)}`)
+    fetch(`/api/admins?username=${encodeURIComponent(username.trim().toLowerCase())}`)
       .then((res) => res.json())
       .then((admins) => {
         const admin = admins[0];
@@ -25,7 +24,6 @@ function Login() {
           return;
         }
 
-        // بنحفظ إنه الأدمن داخل (بدون كلمة السر)
         localStorage.setItem("admin", JSON.stringify({ id: admin.id, name: admin.name }));
         navigate("/dashboard");
       })

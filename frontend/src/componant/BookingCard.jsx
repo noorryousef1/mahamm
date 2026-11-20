@@ -6,8 +6,6 @@ const statusLabels = {
   rejected: "مرفوض",
 };
 
-// كارد بيعرض تفاصيل حجز وحالته
-// children: أي إشي زيادة بدنا نحطه تحت (زي أزرار الأدمن بالداشبورد)
 function BookingCard({ booking, children }) {
   return (
     <article className="booking-card">
@@ -40,9 +38,21 @@ function BookingCard({ booking, children }) {
       {booking.status === "approved" && booking.meeting && (
         <div className="booking-meeting">
           <b>موعد الاجتماع معنا:</b>
-          <span>📅 {booking.meeting.date}</span>
-          <span>🕐 {booking.meeting.time}</span>
-          <span>📍 {booking.meeting.place}</span>
+          <span>التاريخ: {booking.meeting.date}</span>
+          <span>الساعة: {booking.meeting.time}</span>
+          {booking.meeting.place && <span>المكان: {booking.meeting.place}</span>}
+          {booking.meeting.link && (
+            <a href={booking.meeting.link} target="_blank" rel="noopener noreferrer">
+              رابط الاجتماع
+            </a>
+          )}
+        </div>
+      )}
+
+      {booking.adminMessage && (
+        <div className={`booking-admin-message ${booking.status}`}>
+          <b>رسالة من فريق مهام:</b>
+          <p>{booking.adminMessage}</p>
         </div>
       )}
 

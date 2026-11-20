@@ -6,10 +6,8 @@ function TrackBooking({ savedCodes }) {
   const [bookings, setBookings] = useState(null);
 
   const searchByCode = (value) => {
-    // بنشيل الفراغات وبنكبّر الحروف، لحتى "mh-7kq2xp" تشتغل كمان
     const cleanCode = value.trim().toUpperCase();
 
-    // json-server بيفلتر لحاله: /bookings?code=MH-7KQ2XP
     fetch(`/api/bookings?code=${encodeURIComponent(cleanCode)}`)
       .then((res) => res.json())
       .then((data) => setBookings(data));
@@ -20,7 +18,6 @@ function TrackBooking({ savedCodes }) {
     searchByCode(code);
   };
 
-  // لما يكبس على رمز محفوظ: بنحطه بالخانة وبنبحث فوراً
   const pickSaved = (saved) => {
     setCode(saved);
     searchByCode(saved);
