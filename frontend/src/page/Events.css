@@ -1,0 +1,42 @@
+.events-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px 60px;
+}
+
+.events-page h1 {
+  margin: 0;
+  font-size: 40px;
+  font-weight: 800;
+  color: #1e4a9e;
+}
+
+.events-subtitle {
+  margin: 4px 0 32px;
+  color: #475569;
+  font-size: 18px;
+}
+
+/* الكاردات: بتترتب لحالها حسب عرض الشاشة */
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.events-status {
+  padding: 60px 16px;
+  text-align: center;
+  font-size: 20px;
+  color: #1e4a9e;
+}
+
+.events-status.error {
+  color: #dc2626;
+}
+
+@media (max-width: 480px) {
+  .events-page { padding: 24px 16px 40px; }
+  .events-page h1 { font-size: 30px; }
+  .events-grid { grid-template-columns: 1fr; }
+}

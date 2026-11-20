@@ -1,0 +1,7 @@
+# الحزم والبناء
+node_modules/
+dist/
+
+# الصور الأصلية الكبيرة (منستعمل النسخ الخفيفة بدالها)
+frontend/public/events/IMG_*.JPG
+frontend/public/slides/*-unsplash.jpg

@@ -1,0 +1,42 @@
+.gallery {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: rgba(0, 0, 0, 0.85);
+}
+
+.gallery img {
+  max-width: 80%;
+  max-height: 80vh;
+  border-radius: 12px;
+}
+
+.gallery-arrow,
+.gallery-close {
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 50%;
+  background: #ffffff;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.gallery-close {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.gallery-count {
+  position: absolute;
+  bottom: 20px;
+  margin: 0;
+  color: #ffffff;
+  font-size: 18px;
+  direction: ltr;
+}

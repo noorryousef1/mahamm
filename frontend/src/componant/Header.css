@@ -1,0 +1,84 @@
+/* الشريط كله */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 60px;
+  background: #ffffff;
+  box-shadow: 0 2px 12px rgba(15, 42, 92, 0.08);
+}
+
+/* الشعار والاسم */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.brand-img {
+  height: 80px;
+  width: auto;
+  border-radius: 12px;
+}
+
+.brand-name {
+  font-size: 40px;
+  font-weight: 800;
+  color: #1e4a9e;
+}
+
+/* الروابط */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  color: #0f2a5c;
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
+  color: #0ea5e9;
+}
+
+/* تسجيل الدخول: زر سماوي */
+.nav-links .login {
+  color: #ffffff;
+  background: #0ea5e9;
+  padding: 8px 22px;
+  border-radius: 999px;
+  transition: background 0.2s;
+}
+
+.nav-links .login:hover {
+  color: #ffffff;
+  background: #0284c7;
+}
+
+/* على الموبايل: الروابط تنزل تحت الشعار */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .nav-links {
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .brand-name {
+    font-size: 30px;
+  }
+}
