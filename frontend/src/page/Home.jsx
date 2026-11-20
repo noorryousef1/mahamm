@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import HeroSlider from '../componant/HeroSlider'
 import Feedback from '../componant/Feedback'
 import FeedbackForm from '../componant/FeedbackForm'
+import BookCTA from '../componant/BookCTA'
 import Events from './Events'
 import Members from './Members'
 
@@ -22,6 +23,7 @@ const Home = () => {
     <div>
       <HeroSlider />
       <Events />
+      <BookCTA />
       <Feedback feedback={feedback} />
       <Members />
       <FeedbackForm onAdd={addFeedback} />

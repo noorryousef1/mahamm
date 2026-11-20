@@ -1,0 +1,73 @@
+/* نفس عرض باقي الأقسام */
+.book-cta-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 24px 40px;
+}
+
+/* البانر: صورة وفوقها لون أزرق شفاف */
+.book-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 48px 56px;
+  border-radius: 24px;
+  background:
+    linear-gradient(to left, rgba(20, 40, 130, 0.92), rgba(14, 165, 233, 0.75)),
+    url("/slides/slide2.jpg") center / cover;
+  color: #ffffff;
+  box-shadow: 0 12px 30px rgba(15, 42, 92, 0.18);
+}
+
+.book-cta-text h2 {
+  margin: 0 0 10px;
+  font-size: 40px;
+  font-weight: 800;
+}
+
+.book-cta-text p {
+  max-width: 620px;
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.8;
+}
+
+.book-cta-btn {
+  flex-shrink: 0;
+  padding: 14px 44px;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #1e4a9e;
+  font-size: 20px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.book-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+  .book-cta {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 32px 24px;
+  }
+
+  .book-cta-text h2 {
+    font-size: 30px;
+  }
+
+  .book-cta-text p {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 480px) {
+  .book-cta-section {
+    padding: 16px 16px 32px;
+  }
+}
