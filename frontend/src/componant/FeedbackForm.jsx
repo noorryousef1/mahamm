@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { sendFeedback } from "../api";
 import "./FeedbackForm.css";
 
 function FeedbackForm() {
@@ -13,14 +14,7 @@ function FeedbackForm() {
     setSending(true);
     setMessage("");
 
-    const newFeedback = { name, eventName, text, status: "pending" };
-
-    fetch("/api/feedback", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newFeedback),
-    })
-      .then((res) => res.json())
+    sendFeedback({ name: name.trim(), eventName: eventName.trim(), text: text.trim() })
       .then(() => {
         setName("");
         setEventName("");

@@ -1,44 +1,37 @@
 import { useState, useEffect } from "react";
 import SearchBox from "../SearchBox";
 import { matches } from "../../utils/search";
+import { getAdmins, deleteAdmin } from "../../api";
 import AdminForm from "./AdminForm";
 
-function AdminAdmins() {
+function AdminAdmins({ me }) {
   const [admins, setAdmins] = useState([]);
   const [query, setQuery] = useState("");
   const [editingId, setEditingId] = useState(null);
-  const me = JSON.parse(localStorage.getItem("admin"));
 
   useEffect(() => {
-    fetch("/api/admins")
-      .then((res) => res.json())
-      .then((data) => setAdmins(data));
+    getAdmins().then((data) => setAdmins(data));
   }, []);
 
   const handleSave = (saved) => {
     const exists = admins.some((a) => a.id === saved.id);
     setAdmins(exists ? admins.map((a) => (a.id === saved.id ? saved : a)) : [...admins, saved]);
     setEditingId(null);
-
-    if (saved.id === me.id) {
-      localStorage.setItem("admin", JSON.stringify({ id: saved.id, name: saved.name }));
-    }
   };
 
   const remove = (admin) => {
     if (!window.confirm(`متأكد بدك تحذف الأدمن "${admin.name}"؟ ما رح يقدر يدخل على Dashboard بعدها.`)) return;
 
-    fetch(`/api/admins/${admin.id}`, { method: "DELETE" }).then(() => {
+    deleteAdmin(admin.id).then(() => {
       setAdmins(admins.filter((a) => a.id !== admin.id));
     });
   };
 
-  const myAccount = admins.find((a) => a.id === me.id);
-  const isOwner = myAccount?.role === "owner";
+  const isOwner = me.role === "owner";
   const canEdit = (admin) => isOwner || admin.id === me.id;
   const canDelete = (admin) => isOwner && admin.id !== me.id;
 
-  const filtered = admins.filter((item) => matches(query, item.name, item.username));
+  const filtered = admins.filter((item) => matches(query, item.name, item.email));
 
   return (
     <section>
@@ -50,14 +43,14 @@ function AdminAdmins() {
         )}
       </div>
 
-      {myAccount && !isOwner && (
+      {!isOwner && (
         <p className="admin-note">
           بس المالك بيقدر يضيف أدمن جداد أو يعدّل على حساباتهم. إنت بتقدر تعدّل حسابك إنت بس.
         </p>
       )}
 
       {isOwner && editingId === "new" && (
-        <AdminForm admins={admins} onSave={handleSave} onCancel={() => setEditingId(null)} />
+        <AdminForm onSave={handleSave} onCancel={() => setEditingId(null)} />
       )}
 
       {query && filtered.length === 0 && (
@@ -70,7 +63,7 @@ function AdminAdmins() {
             <AdminForm
               key={admin.id}
               admin={admin}
-              admins={admins}
+              isMe={admin.id === me.id}
               onSave={handleSave}
               onCancel={() => setEditingId(null)}
             />
@@ -85,7 +78,7 @@ function AdminAdmins() {
                   {admin.role === "owner" && <span className="admin-owner"> (المالك)</span>}
                   {admin.id === me.id && <span className="admin-me"> (إنت)</span>}
                 </h3>
-                <p dir="ltr" className="admin-username">@{admin.username}</p>
+                <p dir="ltr" className="admin-username">{admin.email}</p>
               </div>
               {canEdit(admin) && (
                 <button className="btn-edit" onClick={() => setEditingId(admin.id)}>تعديل</button>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import SearchBox from "../SearchBox";
 import { matches } from "../../utils/search";
+import { getAllFeedback, setFeedbackStatus, deleteFeedback } from "../../api";
 
 const statusLabels = {
   pending: "بانتظار المراجعة",
@@ -13,27 +14,19 @@ function AdminFeedback() {
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    fetch("/api/feedback?_sort=id&_order=desc")
-      .then((res) => res.json())
-      .then((data) => setFeedback(data));
+    getAllFeedback().then((data) => setFeedback(data));
   }, []);
 
   const setStatus = (item, status) => {
-    fetch(`/api/feedback/${item.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status }),
-    })
-      .then((res) => res.json())
-      .then((updated) => {
-        setFeedback(feedback.map((f) => (f.id === updated.id ? updated : f)));
-      });
+    setFeedbackStatus(item.id, status).then(() => {
+      setFeedback(feedback.map((f) => (f.id === item.id ? { ...f, status } : f)));
+    });
   };
 
   const remove = (item) => {
     if (!window.confirm(`متأكد بدك تحذف رأي "${item.name}" نهائياً؟`)) return;
 
-    fetch(`/api/feedback/${item.id}`, { method: "DELETE" }).then(() => {
+    deleteFeedback(item.id).then(() => {
       setFeedback(feedback.filter((f) => f.id !== item.id));
     });
   };

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import resizeImage, { imageErrorMessage } from "../../utils/resizeImage";
+import { saveEvent } from "../../api";
 
 const emptyEvent = {
   name: "",
@@ -75,14 +76,8 @@ function EventForm({ event, members, onSave, onCancel }) {
     }
 
     setSaving(true);
-    const isNew = !event;
 
-    fetch(isNew ? "/api/events" : `/api/events/${event.id}`, {
-      method: isNew ? "POST" : "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(isNew ? { ...form, id: String(Date.now()) } : form),
-    })
-      .then((res) => res.json())
+    saveEvent(event ? { ...form, id: event.id } : form)
       .then((saved) => onSave(saved))
       .catch(() => setError("صار خطأ بالحفظ، جرّب كمان مرة"))
       .finally(() => setSaving(false));

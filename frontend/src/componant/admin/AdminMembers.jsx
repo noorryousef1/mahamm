@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import SearchBox from "../SearchBox";
 import { matches } from "../../utils/search";
 import MemberForm from "./MemberForm";
+import { getMembers } from "../../api";
 
 function AdminMembers() {
   const [members, setMembers] = useState([]);
@@ -9,9 +10,7 @@ function AdminMembers() {
   const [editingId, setEditingId] = useState(null);
 
   useEffect(() => {
-    fetch("/api/members")
-      .then((res) => res.json())
-      .then((data) => setMembers(data));
+    getMembers().then((data) => setMembers(data));
   }, []);
 
   const handleSave = (saved) => {

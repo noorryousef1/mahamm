@@ -1,9 +1,17 @@
 import { useState } from "react";
+import { createAdmin, updateAdmin, changeMyPassword } from "../../api";
 
-function AdminForm({ admin, admins, onSave, onCancel }) {
+const errorMessages = {
+  "auth/email-already-in-use": "هاد الإيميل إله حساب من قبل",
+  "auth/invalid-email": "الإيميل مش صحيح",
+  "auth/weak-password": "كلمة السر ضعيفة، لازم تكون 6 حروف أو أكتر",
+  "auth/requires-recent-login": "لتغيير كلمة السر، اطلع وادخل من جديد وبعدين جرّب",
+};
+
+function AdminForm({ admin, isMe, onSave, onCancel }) {
   const [form, setForm] = useState({
     name: admin ? admin.name : "",
-    username: admin ? admin.username : "",
+    email: admin ? admin.email : "",
     password: "",
   });
   const [error, setError] = useState("");
@@ -13,41 +21,34 @@ function AdminForm({ admin, admins, onSave, onCancel }) {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-
-    const username = form.username.trim().toLowerCase();
-
-    const taken = admins.some((a) => a.username === username && (!admin || a.id !== admin.id));
-    if (taken) {
-      setError("اسم المستخدم هاد مستعمل، اختار اسم ثاني");
-      return;
-    }
 
     if (form.password && form.password.length < 6) {
       setError("كلمة السر لازم تكون 6 حروف أو أكتر");
       return;
     }
 
-    const isNew = !admin;
-    const data = { name: form.name.trim(), username };
-    if (form.password) data.password = form.password;
-    if (isNew) {
-      data.id = String(Date.now());
-      data.role = "admin";
-    }
-
     setSaving(true);
-    fetch(isNew ? "/api/admins" : `/api/admins/${admin.id}`, {
-      method: isNew ? "POST" : "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((saved) => onSave(saved))
-      .catch(() => setError("صار خطأ بالحفظ، جرّب كمان مرة"))
-      .finally(() => setSaving(false));
+    try {
+      let saved;
+      if (admin) {
+        saved = await updateAdmin(admin.id, { name: form.name.trim() });
+        if (isMe && form.password) await changeMyPassword(form.password);
+      } else {
+        saved = await createAdmin({
+          name: form.name.trim(),
+          email: form.email.trim(),
+          password: form.password,
+        });
+      }
+      onSave(saved);
+    } catch (err) {
+      setError(errorMessages[err.code] || "صار خطأ بالحفظ، جرّب كمان مرة");
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -60,27 +61,31 @@ function AdminForm({ admin, admins, onSave, onCancel }) {
           <input name="name" value={form.name} onChange={handleChange} required />
         </label>
         <label>
-          اسم المستخدم
+          الإيميل
           <input
-            name="username"
-            value={form.username}
+            type="email"
+            name="email"
+            value={form.email}
             onChange={handleChange}
             dir="ltr"
             autoComplete="off"
+            disabled={Boolean(admin)}
             required
           />
         </label>
-        <label>
-          {admin ? "كلمة سر جديدة (اتركها فاضية إذا ما بدك تغيّرها)" : "كلمة السر"}
-          <input
-            type="password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-            autoComplete="new-password"
-            required={!admin}
-          />
-        </label>
+        {(!admin || isMe) && (
+          <label>
+            {admin ? "كلمة سر جديدة (اتركها فاضية إذا ما بدك تغيّرها)" : "كلمة السر"}
+            <input
+              type="password"
+              name="password"
+              value={form.password}
+              onChange={handleChange}
+              autoComplete="new-password"
+              required={!admin}
+            />
+          </label>
+        )}
       </div>
 
       {error && <p className="admin-error">{error}</p>}

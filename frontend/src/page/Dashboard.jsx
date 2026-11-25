@@ -5,6 +5,7 @@ import AdminEvents from "../componant/admin/AdminEvents";
 import AdminMembers from "../componant/admin/AdminMembers";
 import AdminFeedback from "../componant/admin/AdminFeedback";
 import AdminAdmins from "../componant/admin/AdminAdmins";
+import { logout as signOutAdmin } from "../api";
 import "./Dashboard.css";
 
 const tabs = [
@@ -15,14 +16,12 @@ const tabs = [
   { id: "admins", label: "الأدمن", Component: AdminAdmins },
 ];
 
-function Dashboard() {
+function Dashboard({ admin }) {
   const [activeTab, setActiveTab] = useState("bookings");
   const navigate = useNavigate();
-  const admin = JSON.parse(localStorage.getItem("admin"));
 
   const logout = () => {
-    localStorage.removeItem("admin");
-    navigate("/login");
+    signOutAdmin().then(() => navigate("/login"));
   };
 
   const ActiveComponent = tabs.find((tab) => tab.id === activeTab).Component;
@@ -49,7 +48,7 @@ function Dashboard() {
         ))}
       </nav>
 
-      <ActiveComponent />
+      <ActiveComponent me={admin} />
     </main>
   );
 }

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import resizeImage, { imageErrorMessage } from "../utils/resizeImage";
+import { createBooking } from "../api";
 import "./BookingForm.css";
 
 const emptyForm = {
@@ -64,12 +65,7 @@ function BookingForm({ onBooked }) {
       createdAt: new Date().toISOString(),
     };
 
-    fetch("/api/bookings", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newBooking),
-    })
-      .then((res) => res.json())
+    createBooking(newBooking)
       .then((saved) => {
         setForm(emptyForm);
         setImages([]);

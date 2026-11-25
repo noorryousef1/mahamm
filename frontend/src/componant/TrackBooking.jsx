@@ -1,5 +1,6 @@
 import { useState } from "react";
 import BookingCard from "./BookingCard";
+import { getBookingByCode } from "../api";
 
 function TrackBooking({ savedCodes }) {
   const [code, setCode] = useState("");
@@ -8,9 +9,9 @@ function TrackBooking({ savedCodes }) {
   const searchByCode = (value) => {
     const cleanCode = value.trim().toUpperCase();
 
-    fetch(`/api/bookings?code=${encodeURIComponent(cleanCode)}`)
-      .then((res) => res.json())
-      .then((data) => setBookings(data));
+    getBookingByCode(cleanCode)
+      .then((booking) => setBookings(booking ? [booking] : []))
+      .catch(() => setBookings([]));
   };
 
   const handleSearch = (e) => {

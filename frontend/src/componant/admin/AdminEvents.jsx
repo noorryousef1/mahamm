@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import SearchBox from "../SearchBox";
 import { matches } from "../../utils/search";
 import EventForm from "./EventForm";
+import { getEvents, getMembers } from "../../api";
 
 function AdminEvents() {
   const [events, setEvents] = useState([]);
@@ -10,10 +11,7 @@ function AdminEvents() {
   const [editingId, setEditingId] = useState(null);
 
   useEffect(() => {
-    Promise.all([
-      fetch("/api/events").then((res) => res.json()),
-      fetch("/api/members").then((res) => res.json()),
-    ]).then(([eventsData, membersData]) => {
+    Promise.all([getEvents(), getMembers()]).then(([eventsData, membersData]) => {
       setEvents(eventsData);
       setMembers(membersData);
     });

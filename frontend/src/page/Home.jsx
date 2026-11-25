@@ -5,14 +5,15 @@ import FeedbackForm from '../componant/FeedbackForm'
 import BookCTA from '../componant/BookCTA'
 import Events from './Events'
 import Members from './Members'
+import { getApprovedFeedback } from '../api'
 
 const Home = () => {
   const [feedback, setFeedback] = useState([])
 
   useEffect(() => {
-    fetch('/api/feedback?status=approved')
-      .then((res) => res.json())
+    getApprovedFeedback()
       .then((data) => setFeedback(data))
+      .catch(() => setFeedback([]))
   }, [])
 
   return (

@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import EventCard from "../componant/EventCard";
 import Gallery from "../componant/Gallery";
 import { matches } from "../utils/search";
+import { getEvents } from "../api";
 import "./Events.css";
 
 function Events() {
@@ -15,10 +16,9 @@ function Events() {
   const [galleryEvent, setGalleryEvent] = useState(null);
 
   useEffect(() => {
-    fetch("/api/events")
-      .then((res) => res.json())
+    getEvents()
       .then((data) => setEvents(data))
-      .catch(() => setError("use (npm run server)."))
+      .catch(() => setError("ما قدرنا نجيب الفعاليات، جرّب تحدّث الصفحة."))
       .finally(() => setLoading(false));
   }, []);
 

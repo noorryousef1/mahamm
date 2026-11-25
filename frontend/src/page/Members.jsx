@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import MemberCard from "../componant/MemberCard";
+import { getMembers, getEvents } from "../api";
 import "./Members.css";
 
 function Members() {
@@ -9,15 +10,12 @@ function Members() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    Promise.all([
-      fetch("/api/members").then((res) => res.json()),
-      fetch("/api/events").then((res) => res.json()),
-    ])
+    Promise.all([getMembers(), getEvents()])
       .then(([membersData, eventsData]) => {
         setMembers(membersData);
         setEvents(eventsData);
       })
-      .catch(() => setError("ما قدرنا نجيب الأعضاء. تأكد إنه الباك شغّال"))
+      .catch(() => setError("ما قدرنا نجيب الأعضاء، جرّب تحدّث الصفحة."))
       .finally(() => setLoading(false));
   }, []);
 

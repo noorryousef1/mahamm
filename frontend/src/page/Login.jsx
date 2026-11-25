@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { login } from "../api";
 import "./Login.css";
 
 function Login() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -14,20 +15,17 @@ function Login() {
     setError("");
     setLoading(true);
 
-    fetch(`/api/admins?username=${encodeURIComponent(username.trim().toLowerCase())}`)
-      .then((res) => res.json())
-      .then((admins) => {
-        const admin = admins[0];
-
-        if (!admin || admin.password !== password) {
-          setError("اسم المستخدم أو كلمة السر غلط");
-          return;
+    login(email.trim(), password)
+      .then(() => navigate("/dashboard"))
+      .catch((err) => {
+        if (err.message === "not-admin") {
+          setError("هاد الحساب مش أدمن");
+        } else if (err.code === "auth/network-request-failed") {
+          setError("في مشكلة بالإنترنت، جرّب كمان مرة");
+        } else {
+          setError("الإيميل أو كلمة السر غلط");
         }
-
-        localStorage.setItem("admin", JSON.stringify({ id: admin.id, name: admin.name }));
-        navigate("/dashboard");
       })
-      .catch(() => setError("ما قدرنا نوصل للسيرفر، تأكد إنه الباك شغّال"))
       .finally(() => setLoading(false));
   };
 
@@ -38,11 +36,13 @@ function Login() {
         <h1>تسجيل دخول الأدمن</h1>
 
         <label>
-          اسم المستخدم
+          الإيميل
           <input
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             autoComplete="username"
+            dir="ltr"
             required
           />
         </label>

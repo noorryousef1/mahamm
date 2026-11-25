@@ -1,0 +1,59 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAdmin() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    function isOwner() {
+      return isAdmin()
+        && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == "owner";
+    }
+
+    match /events/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /members/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /tasks/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /feedback/{id} {
+      allow read: if resource.data.status == "approved" || isAdmin();
+      allow create: if request.resource.data.keys().hasOnly(["name", "eventName", "text", "status", "createdAt"])
+        && request.resource.data.status == "pending"
+        && request.resource.data.name is string && request.resource.data.name.size() <= 100
+        && request.resource.data.eventName is string && request.resource.data.eventName.size() <= 150
+        && request.resource.data.text is string && request.resource.data.text.size() <= 2000;
+      allow update, delete: if isAdmin();
+    }
+
+    match /bookings/{code} {
+      allow get: if true;
+      allow list: if isAdmin();
+      allow create: if request.resource.data.code == code
+        && request.resource.data.status == "pending"
+        && request.resource.data.meeting == null
+        && request.resource.data.images.size() <= 4;
+      allow update, delete: if isAdmin();
+    }
+
+    match /admins/{uid} {
+      allow read: if isAdmin();
+      allow create, delete: if isOwner() && uid != request.auth.uid;
+      allow update: if isOwner()
+        || (request.auth != null && request.auth.uid == uid
+            && request.resource.data.role == resource.data.role);
+    }
+  }
+}

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import SearchBox from "../SearchBox";
 import { matches } from "../../utils/search";
 import BookingCard from "../BookingCard";
+import { getBookings, updateBooking as saveBookingChanges } from "../../api";
 
 function BookingActions({ booking, onUpdate }) {
   const [meeting, setMeeting] = useState({ date: "", time: "", place: "", link: "" });
@@ -13,13 +14,9 @@ function BookingActions({ booking, onUpdate }) {
   };
 
   const updateBooking = (changes) => {
-    fetch(`/api/bookings/${booking.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(changes),
-    })
-      .then((res) => res.json())
-      .then((updated) => onUpdate(updated));
+    saveBookingChanges(booking.id, changes)
+      .then((updated) => onUpdate(updated))
+      .catch(() => setError("صار خطأ بالحفظ، جرّب كمان مرة"));
   };
 
   const approve = (e) => {
@@ -76,8 +73,7 @@ function AdminBookings() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/bookings?_sort=createdAt&_order=desc")
-      .then((res) => res.json())
+    getBookings()
       .then((data) => setBookings(data))
       .finally(() => setLoading(false));
   }, []);

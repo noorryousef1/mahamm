@@ -9,10 +9,10 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "server": "npm run db:create && json-server --watch ../db.json --port 3001 --static node_modules/json-server/public",
-    "db:create": "node -e \"const fs=require('fs');if(!fs.existsSync('../db.json'))fs.copyFileSync('../db.seed.json','../db.json')\"",
-    "build:vercel": "vite build && node scripts/build-data.js"
+    "db:create": "node -e \"const fs=require('fs');if(!fs.existsSync('../db.json'))fs.copyFileSync('../db.seed.json','../db.json')\""
   },
   "dependencies": {
+    "firebase": "^13.4.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-router-dom": "^7.18.5"

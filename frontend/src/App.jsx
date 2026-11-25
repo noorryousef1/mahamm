@@ -23,7 +23,7 @@ function App() {
           path="/dashboard"
           element={
             <RequireAdmin>
-              <Dashboard />
+              {(admin) => <Dashboard admin={admin} />}
             </RequireAdmin>
           }
         />

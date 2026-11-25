@@ -1,5 +1,6 @@
 import { useState } from "react";
 import resizeImage, { imageErrorMessage } from "../../utils/resizeImage";
+import { saveMember } from "../../api";
 
 const emptyMember = { name: "", role: "", color: "#6366f1", image: "" };
 
@@ -33,14 +34,8 @@ function MemberForm({ member, onSave, onCancel }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     setSaving(true);
-    const isNew = !member;
 
-    fetch(isNew ? "/api/members" : `/api/members/${member.id}`, {
-      method: isNew ? "POST" : "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(isNew ? { ...form, id: String(Date.now()) } : form),
-    })
-      .then((res) => res.json())
+    saveMember(member ? { ...form, id: member.id } : form)
       .then((saved) => onSave(saved))
       .catch(() => setError("صار خطأ بالحفظ، جرّب كمان مرة"))
       .finally(() => setSaving(false));
